@@ -36,6 +36,38 @@
                     
                 </div>
             </div>
+
+
+            <div class="card">
+                <div class="card-header">Report Submit</div>
+
+                <div class="card-body">
+
+                    <div>
+
+                        <form method="GET" action="{{ url('patient-report/'.$patient->id ) }}" enctype="multipart/form-data">
+
+                            
+                           <label>Upload report : </label><input type="file" name="intentEvFile" accept=".doc, .docx, .pdf">
+
+                           <input type="number" name="id" hidden="hidden" value="{{ $patient->id }}">
+                            
+                            <!-- Form Submit button -->
+                            <div class="row justify-content-center">
+                                          
+                                <button type="submit" class="btn btn-info text-light">Upload</button>
+
+                            </div>
+                            <!--End Form Submit button-->
+                        </form>
+
+
+
+                        
+                    </div>
+                    
+                </div>
+            </div>
         </div>
     </div>
 </div>

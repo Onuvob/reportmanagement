@@ -4,25 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Auth;
-
-use App\Report;
-use App\User;
-
-class PatientController extends Controller
+class ReportController extends Controller
 {
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-
     /**
      * Display a listing of the resource.
      *
@@ -31,15 +14,6 @@ class PatientController extends Controller
     public function index()
     {
         //
-        //return "hi";
-
-        //return Auth::user()->id;
-
-        $patientList = Report::where('doctor_id', Auth::user()->id)
-                            ->orderBy('updated_at', 'desc')
-                            ->paginate(30);
-
-        return view('patientlist')->with('patientlist', $patientList);
     }
 
     /**
@@ -72,19 +46,6 @@ class PatientController extends Controller
     public function show($id)
     {
         //
-
-        $patient = User::find($id);
-
-
-        $patientReport = Report::where('doctor_id', Auth::user()->id)
-                            ->where('patient_id', $id)
-                            //->orderBy('updated_at', 'desc')
-                            ->get();
-
-
-
-        return view('patientinfo')->with('patient', $patient)->with('patientreport', $patientReport);
-
     }
 
     /**
@@ -119,13 +80,5 @@ class PatientController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function submitReport($id, $request)
-    {
-        //
-        //return $request->input('intentEvFile');
-        return $patientId;
-        return view('home');
     }
 }

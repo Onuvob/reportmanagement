@@ -20,3 +20,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('patient', 'PatientController');
+
+Route::GET('patient-report/{id}', 'PatientController@submitReport');
