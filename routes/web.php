@@ -21,4 +21,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('patient', 'PatientController');
 
-Route::GET('patient-report/{id}', 'PatientController@submitReport');
+//Route::post('patient-report', 'PatientController@submitReport');

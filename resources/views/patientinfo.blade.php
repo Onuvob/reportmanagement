@@ -26,9 +26,17 @@
 
                     <div>
 
-                        @foreach($patientreport as $report)
+                        @foreach($patientreport as $num => $report)
 
-                            <label>File: {{ $report->file_name }}</label>
+                            <div>
+                                <label>Report {{$num+1}}: 
+
+                                    <a href="{{ asset('storage/report/'. $report->file_name) }}">Open the file!</a>
+
+                                </label>
+                            </div>
+
+                            
                           
                         @endforeach
                         
@@ -45,23 +53,29 @@
 
                     <div>
 
-                        <form method="GET" action="{{ url('patient-report/'.$patient->id ) }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ url('patient') }}"  enctype="multipart/form-data">
 
+                            @csrf
                             
-                           <label>Upload report : </label><input type="file" name="intentEvFile" accept=".doc, .docx, .pdf">
+                            
+                            <div id="" class="">
 
-                           <input type="number" name="id" hidden="hidden" value="{{ $patient->id }}">
-                            
-                            <!-- Form Submit button -->
-                            <div class="row justify-content-center">
+                                <label>Upload report : </label><input required="required" type="file" name="patientFile" accept=".doc, .docx, .pdf">
+
+                                <input type="number" name="pId" hidden="hidden" value="{{ $patient->id }}">
+                                
+
+                                <!-- Form Submit button -->
+                                <div class="row justify-content-center">
                                           
-                                <button type="submit" class="btn btn-info text-light">Upload</button>
+                                    <button type="submit" class="btn btn-success text-light">Submit</button>
+
+                                </div>
+                                <!--End Form Submit button-->
 
                             </div>
-                            <!--End Form Submit button-->
+                            <!-- End Journal -->
                         </form>
-
-
 
                         
                     </div>

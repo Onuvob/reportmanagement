@@ -35,9 +35,22 @@ class PatientController extends Controller
 
         //return Auth::user()->id;
 
-        $patientList = Report::where('doctor_id', Auth::user()->id)
+        if( Auth::user()->role == "doctor" )
+            $patientList = Report::where('doctor_id', Auth::user()->id)
                             ->orderBy('updated_at', 'desc')
                             ->paginate(30);
+        
+        else if( Auth::user()->role == "staff" )
+            $patientList = Report::orderBy('updated_at', 'desc')
+                            ->paginate(30);
+
+        
+        else if( Auth::user()->role == "patient" )
+            $patientList = Report::where('patient_id', Auth::user()->id)
+                            ->orderBy('updated_at', 'desc')
+                            ->paginate(30);
+
+        
 
         return view('patientlist')->with('patientlist', $patientList);
     }
@@ -61,6 +74,42 @@ class PatientController extends Controller
     public function store(Request $request)
     {
         //
+
+        $report = new Report;
+
+
+        if( Auth::user()->role == "doctor" )
+        {
+            $report->patient_id = $request->input('pId');
+            $report->doctor_id = Auth::user()->id;
+        }
+        else
+        {
+            $report->patient_id = $request->input('pId');
+
+            $reportF = Report::where('patient_id', $request->input('pId'))->first(); 
+
+            //return $report;
+
+            $report->doctor_id = $reportF->doctor_id;
+        }
+
+        
+        if($request->hasFile('patientFile'))
+        {
+            $fileName = $request->patientFile->getClientOriginalName('');
+            $fileName = time().'_'.$fileName;
+            $request->patientFile->storeAs('public/report', $fileName);
+            $report->file_name = $fileName;
+        }
+
+        $report->save();
+        
+
+        return view('home');
+
+        //$report = Report::find($id);
+
     }
 
     /**
@@ -75,12 +124,15 @@ class PatientController extends Controller
 
         $patient = User::find($id);
 
-
-        $patientReport = Report::where('doctor_id', Auth::user()->id)
+        if( Auth::user()->role == 'doctor' )
+            $patientReport = Report::where('doctor_id', Auth::user()->id)
                             ->where('patient_id', $id)
-                            //->orderBy('updated_at', 'desc')
                             ->get();
 
+
+        else
+            $patientReport = Report::where('patient_id', $id)
+                            ->get();
 
 
         return view('patientinfo')->with('patient', $patient)->with('patientreport', $patientReport);
@@ -121,11 +173,13 @@ class PatientController extends Controller
         //
     }
 
-    public function submitReport($id, $request)
-    {
-        //
-        //return $request->input('intentEvFile');
-        return $patientId;
-        return view('home');
-    }
+    // public function submitReport( Request $request)
+    // {
+    //     //
+
+    //     return $request->input('id');
+    //     return $patientId;
+    //     return view('home');
+        
+    // }
 }

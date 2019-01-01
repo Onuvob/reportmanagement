@@ -24,7 +24,7 @@
                                 <tr>
                                     <th scope="row">@</th>
                                     <td>{{ $patient->id }}</td>
-                                    <td><a class="nav-link text-light" href="{{ url('patient/'. $patient->id ) }}">View</a></td>
+                                    <td><a class="nav-link text-light" href="{{ url('patient/'. $patient->patient_id ) }}">View</a></td>
                                 </tr>
                                 
                             </tbody>
